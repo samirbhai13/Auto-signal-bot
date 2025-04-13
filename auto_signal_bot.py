@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 # Replace with your actual bot token and channel username
-TOKEN = 'YOUR_BOT_TOKEN_HERE'
+TOKEN = 'YOUR_BOT_TOKEN_HERE'7744317479:AAGWhMOivMNuDwU5iCp4pAYf3lx50YFU-Aw
 CHANNEL_ID = '@your_channel_id_here'
 
 def get_price(symbol):
