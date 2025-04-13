@@ -1,67 +1,47 @@
-
 import requests
-from datetime import datetime
 import time
+from datetime import datetime
 
-# Telegram bot token & channel ID
-TOKEN = '7744317479:AAGWhMOivMNuDwU5iCp4pAYf3lx50YFU-Aw'
-CHANNEL_ID = '@samir80s'
+# Replace with your actual bot token and channel username
+TOKEN = 'YOUR_BOT_TOKEN_HERE'
+CHANNEL_ID = '@your_channel_id_here'
 
-# Function to fetch current price
 def get_price(symbol):
     url = f'https://api.binance.com/api/v3/ticker/price?symbol={symbol}'
     res = requests.get(url)
     return float(res.json()['price'])
 
-# Function to send signal to Telegram
 def send_signal(message):
     url = f'https://api.telegram.org/bot{TOKEN}/sendMessage'
     data = {
         'chat_id': CHANNEL_ID,
-        'text': message,
-        'parse_mode': 'HTML'
+        'text': message
     }
     requests.post(url, data=data)
 
-# Function to generate signal
-def generate_signal(symbol):
-    current_price = get_price(symbol)
-    message = f"<b>{symbol} Signal</b>\n"
-    message += f"Current Price: <b>{current_price}</b>\n"
-    
-    # Example trend-based logic (can be customized)
-    if symbol == 'ETHUSDT':
-        if current_price <= 1560:
-            message += "Buy Long Target: 1600, SL: 1530"
-        elif current_price >= 1620:
-            message += "Sell Short Target: 1580, SL: 1650"
-        else:
-            return  # No signal if price is not in range
-    
-    elif symbol == 'GUNUSDT':
-        if current_price <= 0.019:
-            message += "Buy Long Target: 0.022, SL: 0.017"
-        elif current_price >= 0.024:
-            message += "Sell Short Target: 0.021, SL: 0.026"
-        else:
-            return
-    
-    elif symbol == 'XRPUSDT':
-        if current_price <= 0.52:
-            message += "Buy Long Target: 0.56, SL: 0.50"
-        elif current_price >= 0.60:
-            message += "Sell Short Target: 0.56, SL: 0.63"
-        else:
-            return
-    
-    send_signal(message)
+def generate_signal():
+    pairs = ['ETHUSDT', 'XRPUSDT', 'GUNUSDT']
+    for pair in pairs:
+        price = get_price(pair)
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-# Run signals for all tokens
-def run_bot():
-    symbols = ['ETHUSDT', 'GUNUSDT', 'XRPUSDT']
-    for symbol in symbols:
-        generate_signal(symbol)
+        # Simple logic for demo (can be replaced with advanced trend logic)
+        if pair == 'ETHUSDT' and price < 1600:
+            signal = f'[{current_time}] BUY SIGNAL: {pair} at ${price}'
+        elif pair == 'ETHUSDT' and price > 1800:
+            signal = f'[{current_time}] SELL SIGNAL: {pair} at ${price}'
+        elif pair == 'XRPUSDT' and price < 0.45:
+            signal = f'[{current_time}] BUY SIGNAL: {pair} at ${price}'
+        elif pair == 'XRPUSDT' and price > 0.55:
+            signal = f'[{current_time}] SELL SIGNAL: {pair} at ${price}'
+        elif pair == 'GUNUSDT' and price < 0.004:
+            signal = f'[{current_time}] BUY SIGNAL: {pair} at ${price}'
+        elif pair == 'GUNUSDT' and price > 0.006:
+            signal = f'[{current_time}] SELL SIGNAL: {pair} at ${price}'
+        else:
+            signal = f'[{current_time}] {pair} price: ${price} – No clear signal'
 
-# Main loop (used in GitHub Actions scheduler every 15min)
-if __name__ == '__main__':
-    run_bot()
+        send_signal(signal)
+
+# Main runner
+generate_signal()
