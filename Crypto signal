@@ -1,0 +1,51 @@
+import requests
+import time
+from datetime import datetime
+
+TOKEN = '7744317479:AAGWhMOivMNuDwU5iCp4pAYf3lx50YFU-Aw'
+CHANNEL_ID = '@samir80s'
+
+def get_price(symbol):
+    url = f'https://api.binance.com/api/v3/ticker/price?symbol={symbol}'
+    res = requests.get(url)
+    return float(res.json()['price'])
+
+def send_signal(message):
+    url = f'https://api.telegram.org/bot{TOKEN}/sendMessage'
+    data = {
+        'chat_id': CHANNEL_ID,
+        'text': message,
+        'parse_mode': 'HTML'
+    }
+    requests.post(url, data=data)
+
+def check_market():
+    eth = get_price('ETHUSDT')
+    xrp = get_price('XRPUSDT')
+    gun = get_price('GUNUSDT')
+
+    message = f"⏰ <b>{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</b>\n\n"
+
+    # ETH
+    if eth < 3100:
+        message += "ETHUSDT BUY LONG signal @ <b>$%.2f</b>\nTarget: $3200\nSL: $3050\n\n" % eth
+    elif eth > 3250:
+        message += "ETHUSDT SELL SHORT signal @ <b>$%.2f</b>\nTarget: $3150\nSL: $3300\n\n" % eth
+
+    # XRP
+    if xrp < 0.52:
+        message += "XRPUSDT BUY LONG signal @ <b>$%.2f</b>\nTarget: $0.58\nSL: $0.50\n\n" % xrp
+    elif xrp > 0.60:
+        message += "XRPUSDT SELL SHORT signal @ <b>$%.2f</b>\nTarget: $0.54\nSL: $0.63\n\n" % xrp
+
+    # GUN
+    if gun < 0.0050:
+        message += "GUNUSDT BUY LONG signal @ <b>$%.4f</b>\nTarget: $0.0060\nSL: $0.0045\n\n" % gun
+    elif gun > 0.0065:
+        message += "GUNUSDT SELL SHORT signal @ <b>$%.4f</b>\nTarget: $0.0055\nSL: $0.0070\n\n" % gun
+
+    if "signal" in message:
+        send_signal(message)
+
+# Run checker once
+check_market()
