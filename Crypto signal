@@ -23,6 +23,3 @@ jobs:
 
       - name: Run the bot script
         run: python auto_signal_bot.py
-
-
-
