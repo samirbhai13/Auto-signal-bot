@@ -4,7 +4,7 @@ from datetime import datetime
 
 # Replace with your actual bot token and channel username
 TOKEN = '7744317479:AAGWhMOivMNuDwU5iCp4pAYf3lx50YFU-Aw'
-CHANNEL_ID = '@your_channel_id_here'
+CHANNEL_ID = '@samir80s'
 
 def get_price(symbol):
     url = f'https://api.binance.com/api/v3/ticker/price?symbol={symbol}'
