@@ -98,4 +98,4 @@ def run_bot():
         time.sleep(900)  # 15 minutes wait
 
 if __name__ == '__main__':
-    run_bot()
+   auto_signal_bot.py ()
