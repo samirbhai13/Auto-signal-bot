@@ -3,14 +3,14 @@ name: Crypto Signal Bot
 on:
   schedule:
     - cron: '*/15 * * * *'  # Run every 15 minutes
-  workflow_dispatch:        # Allow manual run
+  workflow_dispatch:        # Allow manual run from GitHub
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -18,8 +18,8 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install requests
+      - name: Install Dependencies
         run: pip install requests
 
-      - name: Run the bot script
+      - name: Run Bot Script
         run: python auto_signal_bot.py
