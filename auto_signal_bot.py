@@ -2,8 +2,8 @@ import requests
 import time
 
 # Telegram Bot Config
-BOT_TOKEN = "7744317479:AAGWhMOivMNuDwU5iCp4pAYf3lx50YFU-Aw"
-CHANNEL_ID = "@samir80s"
+BOT_TOKEN = "7744317479:MOivMNuDwU5iCp4pAYf3lx50YFU-Aw"
+CHANNEL_ID = "@sa0s"
 
 # Coin Pairs
 SYMBOLS = ["BTCUSDT", "ETHUSDT", "XRPUSDT", "GUNUSDT"]
